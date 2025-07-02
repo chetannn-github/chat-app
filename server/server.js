@@ -7,13 +7,14 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.use(express.json());
-app.use(express.urlencoded());
 
 app.get("/api/test", (req,res)=>{
     return res.json({"message" : "server is running fine"});
 })
 
-app.use("/api/auth", authRouter)
+app.use("/api/auth", authRouter);
+
+
 
 
 app.listen(PORT, ()=> {

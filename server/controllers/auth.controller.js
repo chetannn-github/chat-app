@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs"
-import { generateToken } from "../utils/generateToken.js";
+import { generateToken } from "../generateToken.js";
 import { isValidEmail } from "../utils/isValidEmail.js";
 
 
@@ -38,7 +38,7 @@ export const signup = async(req,res)=>{
         const newUser = new User({email,username,password:hash,profilePic});
         await newUser.save();
 
-        const token = generateToken(newUser._id);
+        const token = generateToken(newUser.id);
         newUser.password = undefined;
 
         res.json({user : newUser,token,"success" : true})
@@ -67,13 +67,22 @@ export const login = async(req,res) =>{
         if(!isPasswordCorrect) {
             return res.json({"message" : "username or password is incorrect","success" : false});
         }
-        const token = generateToken(user._id);
+        
+        const token = generateToken(user.id);
         user.password = undefined;
+        // console.log(token);
         return res.json({user, token,"success" : true});
 
     } catch (error) {
         console.log(error);
         return res.json({"message" : "internal server error","success" : false});
     }
+}
+
+
+export const updateProfile = async(req,res) => {
+    console.log(req.user);
+
+    return res.json({user : req.user})
 }
 
