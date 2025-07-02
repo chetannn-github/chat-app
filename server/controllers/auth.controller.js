@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import bcrypt from "bcryptjs"
 import { generateToken } from "../generateToken.js";
 import { isValidEmail } from "../utils/isValidEmail.js";
+import { uploadImage } from "../config/cloudinary.config.js";
 
 
 export const signup = async(req,res)=>{
@@ -81,8 +82,22 @@ export const login = async(req,res) =>{
 
 
 export const updateProfile = async(req,res) => {
-    console.log(req.user);
+    try {
+        const {profilePic} = req.body;
+        if(!profilePic) {
+            return res.json({"message" : "profile image is missing" , "success" : false});
+        }
 
-    return res.json({user : req.user})
+        let {secure_url} = await uploadImage(profilePic);
+        let updatedUser = await User.findByIdAndUpdate(req.user._id, {profilePic : secure_url}, {new : true})
+        return res.json({user : updatedUser, "success" : true});
+
+        
+    } catch (error) {
+        console.log(error);
+        return res.json({"message" : "internal server error","success" : false});
+    }
+
+   
 }
 
