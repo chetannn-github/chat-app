@@ -1,7 +1,7 @@
 import express from "express"
 import "dotenv/config"
-import {authRouter,messageRouter, userRouter} from "./routes/index.js";
-import { connectToDb } from "./config/db.config.js";
+import {authRouter,messageRouter, userRouter} from "./src/routes/index.js";
+import { connectToDb } from "./src/config/db.config.js";
 
 
 const app = express();

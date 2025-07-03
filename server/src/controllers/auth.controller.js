@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs"
-import { generateToken } from "../generateToken.js";
+import { generateToken } from "../utils/generateToken.js";
 import { isValidEmail } from "../utils/isValidEmail.js";
 import { uploadImage } from "../config/cloudinary.config.js";
 
