@@ -1,7 +1,8 @@
 import express from "express"
 import "dotenv/config"
-import authRouter from "./routes/auth.routes.js";
+import {authRouter,messageRouter, userRouter} from "./routes/index.js";
 import { connectToDb } from "./config/db.config.js";
+
 
 const app = express();
 const PORT = process.env.PORT;
@@ -14,7 +15,8 @@ app.get("/api/test", (req,res)=>{
 })
 
 app.use("/api/auth", authRouter);
-
+app.use("/api/message",messageRouter);
+app.use("/api",userRouter);
 
 
 
