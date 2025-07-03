@@ -60,13 +60,13 @@ export const login = async(req,res) =>{
         const user = await User.findOne({username});
         // console.log(user);
         if(!user) {
-            return res.json({"message" : "username or password is incorrect","success" : false});
+            return res.json({"message" : "Invalid credentials","success" : false});
         }
 
         const isPasswordCorrect = await bcrypt.compare(password,user.password);
         
         if(!isPasswordCorrect) {
-            return res.json({"message" : "username or password is incorrect","success" : false});
+            return res.json({"message" : "Invalid credentials","success" : false});
         }
         
         const token = generateToken(user.id);
@@ -90,14 +90,23 @@ export const updateProfile = async(req,res) => {
 
         let {secure_url} = await uploadImage(profilePic);
         let updatedUser = await User.findByIdAndUpdate(req.user._id, {profilePic : secure_url}, {new : true})
+
         return res.json({user : updatedUser, "success" : true});
 
-        
     } catch (error) {
         console.log(error);
         return res.json({"message" : "internal server error","success" : false});
     }
 
-   
+}
+
+
+export const checkAuth = async (req,res) => {
+    try {
+        return res.json({success : true, user : req.user});
+    } catch (error) {
+        console.log(error);
+        return res.json({"message" : "internal server error","success" : false});
+    }
 }
 
